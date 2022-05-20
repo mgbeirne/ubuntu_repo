@@ -1,0 +1,67 @@
+---
+# tasks file for roles/apt_repo
+- name: Create apt-mirror logical volume
+  community.general.lvol:
+    vg: ubuntu-vg
+    lv: apt-mirror
+    size: 100%FREE
+    shrink: no
+- name: Create a Filesystem on the above volume
+  community.general.filesystem:
+    fstype: ext4
+    dev: /dev/ubuntu-vg/apt-mirror
+    opts: "-j -m 2"
+- name: Create a mount point for above
+  file:
+    path: /var/spool/apt-mirror
+    state: directory
+- name: Mount the filesystem
+  ansible.posix.mount:
+    path: /var/spool/apt-mirror
+    src: /dev/ubuntu-vg/apt-mirror
+    fstype: ext4
+    boot: yes
+    state: mounted
+- name: Add the apt-mirror group
+  ansible.builtin.group:
+    name: apt-mirror
+    system: yes
+- name: Add the apt-mirror user and password
+  ansible.builtin.user:
+    comment: "Apt mirror user"
+    group: apt-mirror
+    name: apt-mirror
+    home: /var/spool/apt-mirror
+    state: present
+    system: yes
+    shell: /bin/bash
+    update_password: on_create
+    password: "*********"
+- name: Install Apache2
+  package:
+    name: apache2
+    state: present
+- name: Install apt-mirror script
+  ansible.builtin.copy:
+    src: sync_ubuntu_mirror.sh
+    dest: /var/spool/apt-mirror/sync_ubuntu_mirror.sh
+    owner: apt-mirror
+    group: apt-mirror
+    mode: '0755'
+- name: Enable cron job to run at "15 1,6,11,19 * * *"
+  ansible.builtin.cron:
+    name: "apt-mirror"
+    weekday: "*"
+    minute: "15"
+    hour: "1,6,11,19"
+    job: "/var/spool/apt-mirror/sync_ubuntu_mirror.sh"
+    user: apt-mirror
+    cron_file: apt-mirror
+  notify: "restart cron"
+- name: Install symbolic link to apt-mirror directory for apache
+  ansible.builtin.file:
+    owner: root
+    group: root
+    path: "/var/www/html/ubuntu"
+    src: "/var/spool/apt-mirror/mirror/us.archive.ubuntu.com/ubuntu"
+    state: link
