@@ -60,8 +60,6 @@
   notify: "restart cron"
 - name: Install symbolic link to apt-mirror directory for apache
   ansible.builtin.file:
-    owner: root
-    group: root
     path: "/var/www/html/ubuntu"
     src: "/var/spool/apt-mirror/mirror/us.archive.ubuntu.com/ubuntu"
     state: link

@@ -1,17 +1,20 @@
-Role Name
+ubuntu_repo
 =========
 
-A brief description of the role goes here.
+A role to build an local ubuntu mirror repository on a VM
 
 Requirements
 ------------
 
-Replace the password variable in tasks/main.yml with the output of "ansible-vault encrypt_string `openssl passwd -6 'MySuperSecretPassword'` --name "password"
+Build a VM with about 2.5TB of disk space, but only allocate 20 GB for root and leave the rest unused.
+
+After running the role, run the /var/spool/apt-mirror/sync_ubuntu_mirror.sh as user apt-mirror until it completes a full rsync, which may take days, so comment out the cron job in /etc/cron.d/apt-mirror until it is complete. On clients replace the Internet host in the file /etc/apt/sources.list with your local hostname and use it in any installs of new Ubuntu hosts.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Replace the password variable in tasks/main.yml with the output of "ansible-vault encrypt_string `openssl passwd -6 'MySuperSecretPassword'` --name "password"
+Then run the playbook as: "ansible-playbook --vault-id @prompt -i inventory main.yml" providing the password used to encrypt the above password.
 
 Dependencies
 ------------
@@ -24,15 +27,17 @@ Example Playbook
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: servers
+      roles_path = ./roles
+      become: true
       roles:
-         - { role: username.rolename, x: 42 }
+         - roles/ubuntu_repo
 
 License
 -------
 
-BSD
+GPL
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Mike Beirne http://home.xnet.com/~beirne/index.html
