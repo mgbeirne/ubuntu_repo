@@ -13,7 +13,7 @@ After running the role, run the /var/spool/apt-mirror/sync_ubuntu_mirror.sh as u
 Role Variables
 --------------
 
-Replace the password variable in tasks/main.yml with the output of "ansible-vault encrypt_string `openssl passwd -6 'MySuperSecretPassword'` --name "password"
+Replace the password variable in tasks/main.yml with the output of ``"ansible-vault encrypt_string `openssl passwd -6 'MySuperSecretPassword'` --name "password"``
 Then run the playbook as: "ansible-playbook --vault-id @prompt -i inventory main.yml" providing the password used to encrypt the above password.
 
 Dependencies
