@@ -1,7 +1,7 @@
 ubuntu_repo
 =========
 
-A role to build an local ubuntu mirror repository on a VM
+A role to build a local ubuntu mirror repository on a VM
 
 Requirements
 ------------
@@ -19,7 +19,7 @@ Then run the playbook as: "ansible-playbook --vault-id @prompt -i inventory main
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+On my personal system, I used geerlingguy.security, a common role that is used for all of my VMs that includes timezone and nrpe configurations, an nfs_server role which was used in the initial population of the mirror and this role.
 
 Example Playbook
 ----------------
