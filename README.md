@@ -39,5 +39,6 @@ GPL
 
 Author Information
 ------------------
+I don't remember where I got the sync_ubuntu_mirror.sh script, but it works fine, so thank you to whoever wrote it.
 
 Mike Beirne http://home.xnet.com/~beirne/index.html
