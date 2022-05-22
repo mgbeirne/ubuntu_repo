@@ -56,7 +56,6 @@
     hour: "1,6,11,19"
     job: "/var/spool/apt-mirror/sync_ubuntu_mirror.sh"
     user: apt-mirror
-    cron_file: apt-mirror
   notify: "restart cron"
 - name: Install symbolic link to apt-mirror directory for apache
   ansible.builtin.file:
