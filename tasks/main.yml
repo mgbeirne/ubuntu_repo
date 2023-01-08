@@ -5,27 +5,28 @@
     vg: ubuntu-vg
     lv: apt-mirror
     size: 100%FREE
-    shrink: no
+    shrink: false
 - name: Create a Filesystem on the above volume
   community.general.filesystem:
     fstype: ext4
     dev: /dev/ubuntu-vg/apt-mirror
     opts: "-j -m 2"
 - name: Create a mount point for above
-  file:
+  ansible.builtin.file:
     path: /var/spool/apt-mirror
     state: directory
+    mode: '0755'
 - name: Mount the filesystem
   ansible.posix.mount:
     path: /var/spool/apt-mirror
     src: /dev/ubuntu-vg/apt-mirror
     fstype: ext4
-    boot: yes
+    boot: true
     state: mounted
 - name: Add the apt-mirror group
   ansible.builtin.group:
     name: apt-mirror
-    system: yes
+    system: true
 - name: Add the apt-mirror user and password
   ansible.builtin.user:
     comment: "Apt mirror user"
@@ -33,12 +34,12 @@
     name: apt-mirror
     home: /var/spool/apt-mirror
     state: present
-    system: yes
+    system: true
     shell: /bin/bash
     update_password: on_create
     password: "*********"
 - name: Install Apache2
-  package:
+  ansible.builtin.package:
     name: apache2
     state: present
 - name: Install apt-mirror script
