@@ -30,7 +30,7 @@ Including an example of how to use your role (for instance, with variables passe
       roles_path = ./roles
       become: true
       roles:
-         - roles/ubuntu_repo
+         - ubuntu_repo
 
 License
 -------
