@@ -1,6 +1,6 @@
 ---
 # handlers file for roles/apt_repo
-- name: "restart cron"
-  service:
+- name: "Restart cron"
+  ansible.builtin.service:
     name: "cron.service"
     state: "restarted"

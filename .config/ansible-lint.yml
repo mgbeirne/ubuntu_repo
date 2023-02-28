@@ -3,3 +3,4 @@ warn_list:
   - experimental
   - fqcn-builtins
   - yaml[truthy]
+  - role-name
