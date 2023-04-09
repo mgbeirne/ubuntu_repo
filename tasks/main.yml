@@ -38,6 +38,12 @@
     shell: /bin/bash
     update_password: on_create
     password: "*********"
+- name: Change directory ownership to apt-mirror
+  ansible.builtin.file:
+    path: /var/spool/apt-mirror
+    owner: apt-mirror
+    group: apt-mirror
+    mode: '0755'
 - name: Install Apache2
   ansible.builtin.package:
     name: apache2
