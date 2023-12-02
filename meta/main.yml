@@ -1,5 +1,7 @@
 galaxy_info:
   author: Mike Beirne
+  role_name: mgbeirne.ubuntu_repo
+  name_space: mgbeirne
   description: Apt repo role for my home machines
   company: MGJB, Inc
 
