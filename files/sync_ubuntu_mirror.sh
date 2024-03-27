@@ -24,6 +24,10 @@ if [ ! -d ${BASEDIR} ]; then
 	    mkdir -p ${BASEDIR} || fatal "Creation of ${BASEDIR} failed."
 fi
 
+if [ ! -e /tmp/repo_rsync.lock ];
+  then touch /tmp/repo_rsync.lock;
+trap 'rm -f /tmp/repo_rsync.lock;' EXIT
+
 rsync --recursive --times --links --safe-links --hard-links \
 	  --stats \
 	    --exclude "Packages*" --exclude "Sources*" \
@@ -34,6 +38,8 @@ rsync --recursive --times --links --safe-links --hard-links \
 	  --stats --delete --delete-after \
 	    ${RSYNCSOURCE} ${BASEDIR} || fatal "Second stage of sync failed."
 
-date -u >> /var/spool/apt-mirror/log/$(hostname -f)
+else warn "rsync is already running"
+fi
 
+date >> /var/spool/apt-mirror/log/$(hostname -f)
 
